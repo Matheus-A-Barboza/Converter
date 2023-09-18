@@ -1,3 +1,5 @@
+import sqlite3
+import openpyxl
 import requests
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication, QPushButton, QListWidget, QVBoxLayout, QLabel, QWidget, QFileDialog, \
@@ -13,6 +15,8 @@ import webbrowser
 class AppXMLtoExcel(QWidget):
     def __init__(self):
         super().__init__()
+
+        self.criarBanco()
 
         self.xml_files = []
 
@@ -46,6 +50,30 @@ class AppXMLtoExcel(QWidget):
         layout.addWidget(self.lst_xml)
 
         self.setLayout(layout)
+        # cn.banco()
+
+    def criarBanco(self):
+        conexao = sqlite3.connect('converterXML.db')
+        cursor = conexao.cursor()
+        cursor.execute('''
+                CREATE TABLE IF NOT EXISTS users(
+                id INTEGER PRIMARY KEY,
+                cnpj TEXT,
+                password TEXT
+                )
+            ''')
+
+        cursor.execute('''
+                CREATE TABLE IF NOT EXISTS company(
+                id INTEGER PRIMARY KEY,
+                name TEXT,
+                cnpj TEXT,
+                password TEXT
+                )
+            ''')
+
+        conexao.commit()
+        conexao.close()
 
     def adicionar_xml(self):
         options = QFileDialog.Options()
@@ -136,7 +164,8 @@ class AppXMLtoExcel(QWidget):
             with open(nome_arquivo, 'rb') as xml_file:
                 # Use um arquivo temporário para salvar o PDF
                 with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as pdf_temp_file:
-                    response = requests.post("https://onlineconvertfree.com/pt/convert-format/xml-to-pdf/", files={'xml_file': (nome_arquivo, xml_file)})
+                    # response = requests.post("https://onlineconvertfree.com/pt/convert-format/xml-to-pdf/api/upload")
+                    response = requests.get("https://onlineconvertfree.com/pt/convert-format/xml-to-pdf/api/list", files={'xml_file': (nome_arquivo, xml_file)})
                     if response.status_code == 200:
                         # Verifique se a resposta parece ser um PDF válido
                         if response.headers.get('Content-Type', '').lower() == 'application/pdf':
