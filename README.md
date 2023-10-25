@@ -29,8 +29,6 @@ Este é um aplicativo Python de desktop que permite aos usuários converter arqu
 
 - Certifique-se de ter todas as bibliotecas Python necessárias instaladas antes de executar o aplicativo.
 
-- A conversão para PDF depende de um serviço online ("onlineconvertfree.com"), e é necessário ter uma conexão com a internet para usá-la.
-
 - Este aplicativo foi desenvolvido como uma ferramenta de conversão simples para notas fiscais em XML. Alterações ou melhorias adicionais podem ser implementadas de acordo com suas necessidades.
 
 - Este aplicativo foi desenvolvido por [Matheus]. Você é livre para usar, modificar e distribuir de acordo com os termos da licença aplicável.
